@@ -1,7 +1,14 @@
-import HeroSection from "@/components/ui/hero-section";
+import React from 'react';
+import EnhancedHero from "@/components/ui/enhanced-hero";
+import FeaturesSection from "@/components/ui/features-section";
 
 const Index = () => {
-  return <HeroSection />;
+  return (
+    <div className="overflow-x-hidden">
+      <EnhancedHero />
+      <FeaturesSection />
+    </div>
+  );
 };
 
 export default Index;

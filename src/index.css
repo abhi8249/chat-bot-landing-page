@@ -2,58 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Premium Multilingual Chatbot Design System
-All colors MUST be HSL.
+/* World-Class AI Chatbot Design System
+All colors MUST be HSL. Advanced animations and interactions.
 */
 
 @layer base {
   :root {
-    /* Background System */
-    --background: 220 25% 6%;
-    --background-secondary: 220 20% 8%;
+    /* Advanced Background System */
+    --background: 220 28% 4%;
+    --background-secondary: 220 25% 6%;
+    --background-tertiary: 220 22% 8%;
     --foreground: 210 40% 98%;
 
-    /* Brand Colors */
-    --primary: 248 70% 62%;
+    /* Enhanced Brand Colors */
+    --primary: 248 90% 66%;
     --primary-foreground: 210 40% 98%;
-    --primary-light: 248 70% 72%;
-    --primary-dark: 248 70% 52%;
+    --primary-light: 248 90% 76%;
+    --primary-dark: 248 90% 56%;
+    --primary-glow: 248 90% 86%;
 
-    /* Accent System */
-    --accent: 283 85% 68%;
+    /* Advanced Accent System */
+    --accent: 283 95% 72%;
     --accent-foreground: 210 40% 98%;
-    --accent-light: 283 85% 78%;
+    --accent-light: 283 95% 82%;
+    --accent-dark: 283 95% 62%;
 
-    /* Card System */
-    --card: 220 25% 10%;
+    /* Premium Card System */
+    --card: 220 25% 8%;
     --card-foreground: 210 40% 98%;
-    --card-hover: 220 25% 12%;
+    --card-hover: 220 25% 10%;
+    --card-glow: 220 25% 12%;
 
     /* Interactive Elements */
-    --secondary: 220 15% 20%;
+    --secondary: 220 20% 15%;
     --secondary-foreground: 210 40% 98%;
-    --secondary-hover: 220 15% 25%;
+    --secondary-hover: 220 20% 20%;
 
     /* Semantic Colors */
     --muted: 220 15% 25%;
-    --muted-foreground: 215 20% 65%;
+    --muted-foreground: 215 20% 70%;
 
     --border: 220 15% 20%;
-    --input: 220 15% 15%;
-    --ring: 248 70% 62%;
+    --input: 220 15% 12%;
+    --ring: 248 90% 66%;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    --gradient-secondary: linear-gradient(135deg, hsl(var(--primary-dark)), hsl(var(--primary)));
-    --gradient-hero: linear-gradient(135deg, hsl(220 25% 6%) 0%, hsl(248 70% 12%) 50%, hsl(283 85% 18%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(var(--card-hover)));
+    /* Advanced Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--primary-dark)) 0%, hsl(var(--primary)) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(220 28% 4%) 0%, hsl(248 90% 8%) 25%, hsl(283 95% 12%) 75%, hsl(220 28% 4%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--card-hover)) 50%, hsl(var(--card-glow)) 100%);
+    --gradient-text: linear-gradient(135deg, hsl(var(--primary-glow)) 0%, hsl(var(--accent-light)) 100%);
+    --gradient-mesh: radial-gradient(ellipse 80% 80% at 50% -20%, hsl(var(--primary) / 0.3), transparent 50%),
+                     radial-gradient(ellipse 80% 80% at 80% 50%, hsl(var(--accent) / 0.3), transparent 50%),
+                     radial-gradient(ellipse 80% 80% at 20% 80%, hsl(var(--primary-light) / 0.3), transparent 50%);
 
-    /* Shadows */
-    --shadow-primary: 0 10px 40px -10px hsl(var(--primary) / 0.3);
-    --shadow-accent: 0 10px 40px -10px hsl(var(--accent) / 0.3);
-    --shadow-card: 0 8px 32px -8px hsl(220 25% 2% / 0.4);
+    /* Premium Shadows */
+    --shadow-primary: 0 20px 60px -10px hsl(var(--primary) / 0.4);
+    --shadow-accent: 0 20px 60px -10px hsl(var(--accent) / 0.4);
+    --shadow-card: 0 25px 80px -15px hsl(220 28% 2% / 0.6);
+    --shadow-glow: 0 0 80px hsl(var(--primary) / 0.3);
+    --shadow-intense: 0 35px 100px -20px hsl(var(--primary) / 0.5);
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
 
