@@ -202,7 +202,7 @@ const EnhancedHero = () => {
           {/* Main Headline */}
           <motion.h1 
             variants={itemVariants}
-            className="text-6xl md:text-8xl font-black mb-8 leading-tight"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-8 leading-tight px-2"
           >
             <motion.span 
               className="block bg-gradient-text bg-clip-text text-transparent"
@@ -213,7 +213,7 @@ const EnhancedHero = () => {
             >
               Multilingual AI
             </motion.span>
-            <span className="block text-foreground mt-4">
+            <span className="block text-foreground mt-2 sm:mt-4">
               That{" "}
               <MorphingText 
                 texts={["Understands", "Speaks", "Thinks", "Learns"]} 
@@ -224,8 +224,8 @@ const EnhancedHero = () => {
           </motion.h1>
 
           {/* Enhanced Subtitle */}
-          <motion.div variants={itemVariants} className="mb-12">
-            <p className="text-2xl md:text-3xl text-muted-foreground mb-6 leading-relaxed max-w-4xl mx-auto">
+          <motion.div variants={itemVariants} className="mb-8 sm:mb-12 px-4">
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-6 leading-relaxed max-w-4xl mx-auto">
               Experience the future of AI conversation in{" "}
               <span className="text-primary font-semibold">Hindi</span>,{" "}
               <span className="text-primary font-semibold">English</span>, and{" "}
@@ -233,24 +233,24 @@ const EnhancedHero = () => {
             </p>
             
             {/* Stats */}
-            <div className="flex flex-wrap justify-center gap-8 text-center">
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 text-center">
               <div className="flex flex-col items-center">
-                <span className="text-4xl font-bold text-primary">
+                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">
                   <AnimatedCounter value={3} />
                 </span>
-                <span className="text-muted-foreground">Languages</span>
+                <span className="text-muted-foreground text-xs sm:text-sm">Languages</span>
               </div>
               <div className="flex flex-col items-center">
-                <span className="text-4xl font-bold text-accent">
+                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-accent">
                   <AnimatedCounter value={99} suffix="%" />
                 </span>
-                <span className="text-muted-foreground">Accuracy</span>
+                <span className="text-muted-foreground text-xs sm:text-sm">Accuracy</span>
               </div>
               <div className="flex flex-col items-center">
-                <span className="text-4xl font-bold text-primary">
+                <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">
                   <AnimatedCounter value={24} suffix="/7" />
                 </span>
-                <span className="text-muted-foreground">Available</span>
+                <span className="text-muted-foreground text-xs sm:text-sm">Available</span>
               </div>
             </div>
           </motion.div>
@@ -258,12 +258,12 @@ const EnhancedHero = () => {
           {/* Enhanced Language Cards */}
           <motion.div 
             variants={itemVariants}
-            className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16"
+            className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto mb-12 sm:mb-16 px-4"
           >
             {/* English/Hindi Card */}
             <motion.div 
               whileHover={{ scale: 1.02, rotateY: 5 }}
-              className="group relative bg-gradient-card backdrop-blur-xl border border-primary/30 rounded-3xl p-10 shadow-intense hover:shadow-primary transition-all duration-500"
+              className="group relative bg-gradient-card backdrop-blur-xl border border-primary/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-intense hover:shadow-primary transition-all duration-500"
             >
               <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 rounded-3xl transition-opacity duration-500" />
               
@@ -278,24 +278,26 @@ const EnhancedHero = () => {
                   </motion.div>
                 </div>
                 
-                <h3 className="text-3xl font-bold text-foreground mb-6">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-4 sm:mb-6">
                   English & Hindi
                 </h3>
                 
-                <p className="text-muted-foreground mb-10 text-lg leading-relaxed">
+                <p className="text-muted-foreground mb-6 sm:mb-8 md:mb-10 text-sm sm:text-base md:text-lg leading-relaxed">
                   Advanced AI conversations with natural language processing for seamless business communication
                 </p>
                 
-                <div className="space-y-6">
-                  <InteractiveButton variant="hero" size="lg" className="w-full text-lg font-semibold">
-                    <MessageCircle className="h-6 w-6 mr-3" />
-                    Start Intelligent Chat
-                    <Zap className="h-5 w-5 ml-3" />
+                <div className="space-y-4 sm:space-y-6">
+                  <InteractiveButton variant="hero" size="lg" className="w-full text-sm sm:text-base md:text-lg font-semibold py-3 sm:py-4">
+                    <MessageCircle className="h-4 w-4 sm:h-5 w-5 md:h-6 w-6 mr-2 sm:mr-3" />
+                    <span className="hidden sm:inline">Start Intelligent Chat</span>
+                    <span className="sm:hidden">Chat</span>
+                    <Zap className="h-4 w-4 sm:h-5 w-5 ml-2 sm:ml-3" />
                   </InteractiveButton>
-                  <InteractiveButton variant="hero-outline" size="lg" className="w-full text-lg font-semibold">
-                    <Mic className="h-6 w-6 mr-3" />
-                    Begin Voice Call
-                    <Brain className="h-5 w-5 ml-3" />
+                  <InteractiveButton variant="hero-outline" size="lg" className="w-full text-sm sm:text-base md:text-lg font-semibold py-3 sm:py-4">
+                    <Mic className="h-4 w-4 sm:h-5 w-5 md:h-6 w-6 mr-2 sm:mr-3" />
+                    <span className="hidden sm:inline">Begin Voice Call</span>
+                    <span className="sm:hidden">Voice</span>
+                    <Brain className="h-4 w-4 sm:h-5 w-5 ml-2 sm:ml-3" />
                   </InteractiveButton>
                 </div>
               </div>

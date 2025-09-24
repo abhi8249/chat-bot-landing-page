@@ -1,12 +1,32 @@
 import React from 'react';
 import EnhancedHero from "@/components/ui/enhanced-hero";
 import FeaturesSection from "@/components/ui/features-section";
+import UseCases from "@/components/ui/use-cases";
+import HowItWorks from "@/components/ui/how-it-works";
+import DemoSection from "@/components/ui/demo-section";
+import Testimonials from "@/components/ui/testimonials";
+import Pricing from "@/components/ui/pricing";
+import SecurityPrivacy from "@/components/ui/security-privacy";
+import AboutUs from "@/components/ui/about-us";
+import FAQ from "@/components/ui/faq";
+import Contact from "@/components/ui/contact";
+import Footer from "@/components/ui/footer";
 
 const Index = () => {
   return (
     <div className="overflow-x-hidden">
       <EnhancedHero />
       <FeaturesSection />
+      <UseCases />
+      <HowItWorks />
+      <DemoSection />
+      <Testimonials />
+      <Pricing />
+      <SecurityPrivacy />
+      <AboutUs />
+      <FAQ />
+      <Contact />
+      <Footer />
     </div>
   );
 };
