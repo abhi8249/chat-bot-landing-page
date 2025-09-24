@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Brain, MessageCircle, Mic, Globe, Zap, Shield, Clock, Users } from 'lucide-react';
+import FeaturesBackground from './features-background';
 
 const FeatureCard = ({ icon: Icon, title, description, gradient, delay = 0 }: any) => {
   const ref = useRef(null);
@@ -90,10 +91,8 @@ const FeaturesSection = () => {
 
   return (
     <section className="py-32 bg-background-secondary relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-mesh opacity-20" />
-      <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/5 rounded-full blur-3xl" />
+      {/* 3D Interactive Background */}
+      <FeaturesBackground />
       
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
