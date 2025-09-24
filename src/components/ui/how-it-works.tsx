@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Globe, MessageCircle, Zap } from 'lucide-react';
+import ProfessionalAIBackground from './ProfessionalAIBackground';
 
 const StepCard = ({ step, icon: Icon, title, description, delay = 0 }: any) => {
   const ref = useRef(null);
@@ -63,6 +64,7 @@ const HowItWorks = () => {
 
   return (
     <section className="py-32 bg-background-secondary relative overflow-hidden">
+      <ProfessionalAIBackground/>
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
           ref={ref}

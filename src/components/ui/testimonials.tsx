@@ -2,6 +2,8 @@ import React from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Star, Quote } from 'lucide-react';
+import Lottie from "lottie-react";
+import k from "../../../public/livebot.json";   
 
 const TestimonialCard = ({ name, role, content, rating, avatar, delay = 0 }: any) => {
   const ref = useRef(null);
@@ -14,7 +16,7 @@ const TestimonialCard = ({ name, role, content, rating, avatar, delay = 0 }: any
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
       transition={{ duration: 0.6, delay }}
       whileHover={{ scale: 1.05, rotateY: 5 }}
-      className="group relative bg-gradient-card backdrop-blur-xl border border-primary/20 rounded-3xl p-8 shadow-card hover:shadow-primary transition-all duration-500 overflow-hidden"
+      className="group relative bg-transparent-card backdrop-blur-xl border border-primary/20 rounded-3xl p-8 shadow-card hover:shadow-primary transition-all duration-500 overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-500" />
       
@@ -82,6 +84,15 @@ const Testimonials = () => {
 
   return (
     <section className="py-32 bg-background-secondary relative overflow-hidden">
+         <div className="absolute inset-0 pointer-events-none z-0">
+        <Lottie
+          animationData={k}
+          loop
+          autoplay
+          className="w-[800px] h-[800px] opacity-80"
+          style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%, -50%)" }}
+        />
+      </div>
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
           ref={ref}

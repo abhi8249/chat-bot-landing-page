@@ -11,19 +11,19 @@ import AboutUs from "@/components/ui/about-us";
 import FAQ from "@/components/ui/faq";
 import Contact from "@/components/ui/contact";
 import Footer from "@/components/ui/footer";
+import AnimatedNavbar from '@/components/ui/AnimatedNavbar';
 
 const Index = () => {
   return (
     <div className="overflow-x-hidden">
+      <AnimatedNavbar/>
       <EnhancedHero />
       <FeaturesSection />
       <UseCases />
       <HowItWorks />
-      <DemoSection />
       <Testimonials />
       <Pricing />
       <SecurityPrivacy />
-      <AboutUs />
       <FAQ />
       <Contact />
       <Footer />
