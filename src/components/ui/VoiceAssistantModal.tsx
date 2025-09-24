@@ -6,6 +6,7 @@ const VoiceAssistantModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
   const [conversation, setConversation] = useState<string[]>([]);
   const [isSupported, setIsSupported] = useState(false);
   const [permissionGranted, setPermissionGranted] = useState(false);
+  const [hasGreeted, setHasGreeted] = useState(false);
   const recognitionRef = useRef<any>(null);
 
   // Initialize Speech Recognition
@@ -17,42 +18,94 @@ const VoiceAssistantModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
       recognitionRef.current = new SpeechRecognition();
       
       // Enhanced configuration
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
       recognitionRef.current.lang = "en-US";
       recognitionRef.current.maxAlternatives = 1;
 
       recognitionRef.current.onstart = () => {
+        console.log('Speech recognition started');
         setListening(true);
         setPermissionGranted(true);
       };
 
       recognitionRef.current.onresult = (event: any) => {
-        let finalTranscript = '';
+        console.log('Speech recognition event:', event);
         
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          if (event.results[i].isFinal) {
-            finalTranscript += event.results[i][0].transcript;
-          }
+        let transcript = '';
+        
+        // Get the most recent result
+        if (event.results && event.results.length > 0) {
+          const lastResultIndex = event.results.length - 1;
+          transcript = event.results[lastResultIndex][0].transcript.trim();
+          console.log('Raw transcript:', transcript);
         }
+        
+        if (transcript && transcript.length > 0) {
+          console.log('Processing transcript:', transcript);
+          
+          // Add user's spoken text to conversation immediately
+          setConversation((prev) => {
+            console.log('Adding to conversation:', transcript);
+            return [...prev, `You: ${transcript}`];
+          });
+          
+          // Generate AI response after a short delay
+          setTimeout(() => {
+            handleAIResponse(transcript);
+          }, 800);
+        } else {
+          console.log('No transcript captured');
+          setConversation((prev) => [...prev, `AI: I didn't catch that. Please try speaking again.`]);
+        }
+        
+        setListening(false);
+      };
 
-        if (finalTranscript.trim()) {
-          setConversation((prev) => [...prev, `You: ${finalTranscript.trim()}`]);
-          setListening(false);
-          handleAIResponse(finalTranscript.trim());
-        }
+      recognitionRef.current.onspeechstart = () => {
+        console.log('Speech detected');
+      };
+
+      recognitionRef.current.onspeechend = () => {
+        console.log('Speech ended');
+      };
+
+      recognitionRef.current.onaudiostart = () => {
+        console.log('Audio capturing started');
+      };
+
+      recognitionRef.current.onaudioend = () => {
+        console.log('Audio capturing ended');
       };
 
       recognitionRef.current.onerror = (event: any) => {
         console.error('Speech recognition error:', event.error);
         setListening(false);
         
-        if (event.error === 'not-allowed') {
-          setPermissionGranted(false);
-          setConversation((prev) => [...prev, `AI: Please allow microphone access to use voice features.`]);
-        } else if (event.error === 'no-speech') {
-          setConversation((prev) => [...prev, `AI: I didn't hear anything. Please try again.`]);
+        let errorMessage = 'Voice recognition error. ';
+        
+        switch (event.error) {
+          case 'not-allowed':
+            errorMessage += 'Please allow microphone access and try again.';
+            setPermissionGranted(false);
+            break;
+          case 'no-speech':
+            errorMessage += 'No speech was detected. Please try speaking louder.';
+            break;
+          case 'audio-capture':
+            errorMessage += 'No microphone was found. Please check your microphone.';
+            break;
+          case 'network':
+            errorMessage += 'Network error occurred. Please check your connection.';
+            break;
+          case 'aborted':
+            errorMessage += 'Speech recognition was stopped.';
+            break;
+          default:
+            errorMessage += 'Please try again.';
         }
+        
+        setConversation((prev) => [...prev, `AI: ${errorMessage}`]);
       };
 
       recognitionRef.current.onend = () => {
@@ -64,70 +117,116 @@ const VoiceAssistantModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
   }, []);
 
   const handleAIResponse = (userText: string) => {
-    const aiResponse = `Hi! You said: ${userText}. How can I help further?`;
-    setConversation((prev) => [...prev, `AI: ${aiResponse}`]);
+    console.log('Generating AI response for:', userText);
     
-    // Stop any ongoing speech before speaking
-    speechSynthesis.cancel();
+    // Generate a more intelligent AI response
+    const responses = [
+      `I heard you say "${userText}". How can I assist you further?`,
+      `You said "${userText}". What would you like to know about that?`,
+      `Thanks for saying "${userText}". I'm here to help with any questions!`,
+      `You mentioned "${userText}". How can I help you with this?`,
+      `I understand "${userText}". What else can I do for you?`
+    ];
     
-    setTimeout(() => {
-      const utterance = new SpeechSynthesisUtterance(aiResponse);
-      utterance.lang = "en-US";
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      speechSynthesis.speak(utterance);
-    }, 100);
+    const aiResponse = responses[Math.floor(Math.random() * responses.length)];
+    console.log('AI response:', aiResponse);
+    
+    // Add AI response to conversation immediately
+    setConversation((prev) => {
+      console.log('Adding AI response to conversation');
+      return [...prev, `AI: ${aiResponse}`];
+    });
+    
+    // Speak the AI response
+    speakText(aiResponse);
   };
 
   const toggleListening = async () => {
     if (!isSupported) {
-      setConversation((prev) => [...prev, `AI: Speech recognition is not supported in this browser.`]);
+      const message = 'Speech recognition is not supported in this browser. Please use Chrome or Edge.';
+      setConversation((prev) => [...prev, `AI: ${message}`]);
+      speakText(message);
       return;
     }
 
     if (listening) {
       // Stop listening
       if (recognitionRef.current) {
-        recognitionRef.current.stop();
-        setListening(false);
+        try {
+          recognitionRef.current.stop();
+          console.log('Manually stopped listening');
+        } catch (error) {
+          console.error('Error stopping recognition:', error);
+          setListening(false);
+        }
       }
     } else {
       // Start listening
       try {
         if (recognitionRef.current) {
-          setListening(true);
+          console.log('Attempting to start listening...');
+          
+          // Request microphone permission explicitly
+          if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            try {
+              await navigator.mediaDevices.getUserMedia({ audio: true });
+              console.log('Microphone permission granted');
+              setPermissionGranted(true);
+            } catch (permError) {
+              console.error('Microphone permission denied:', permError);
+              const message = 'Microphone access denied. Please allow microphone access and try again.';
+              setConversation((prev) => [...prev, `AI: ${message}`]);
+              speakText(message);
+              return;
+            }
+          }
+          
           recognitionRef.current.start();
+          console.log('Speech recognition start called');
         }
       } catch (error) {
         console.error('Error starting recognition:', error);
         setListening(false);
+        const message = 'Unable to start voice recognition. Please try again.';
+        setConversation((prev) => [...prev, `AI: ${message}`]);
+        speakText(message);
       }
     }
   };
 
-  // Auto-greet on modal open
+  // Helper function to speak text
+  const speakText = (text: string) => {
+    speechSynthesis.cancel();
+    setTimeout(() => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.rate = 0.85;
+      utterance.pitch = 1.1;
+      utterance.volume = 0.9;
+      speechSynthesis.speak(utterance);
+    }, 200);
+  };
+
+  // Auto-greet only once when modal opens
   useEffect(() => {
-    if (isOpen) {
-      const greetText = "Hi, how can I help you?";
+    if (isOpen && !hasGreeted) {
+      const greetText = "Hello! I'm NOVA, your AI assistant. How can I help you today?";
       setConversation([`AI: ${greetText}`]);
+      setHasGreeted(true);
       
-      // Clear any previous speech and wait before speaking
-      speechSynthesis.cancel();
-      setTimeout(() => {
-        const utterance = new SpeechSynthesisUtterance(greetText);
-        utterance.lang = "en-US";
-        utterance.rate = 0.9;
-        speechSynthesis.speak(utterance);
-      }, 500);
-    } else {
+      // Speak greeting
+      speakText(greetText);
+    } else if (!isOpen) {
       // Clean up when modal closes
       if (recognitionRef.current && listening) {
         recognitionRef.current.stop();
         setListening(false);
       }
       speechSynthesis.cancel();
+      setConversation([]);
+      setHasGreeted(false); // Reset greeting flag when modal closes
     }
-  }, [isOpen, listening]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -238,36 +337,49 @@ const VoiceAssistantModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
             {/* Conversation Display */}
             <div className="w-full bg-black/40 backdrop-blur-md rounded-2xl border border-cyan-500/20 p-4 h-56 overflow-y-auto shadow-inner">
-              <div className="space-y-3">
-                {conversation.map((line, idx) => {
-                  const isUser = line.startsWith("You:");
-                  const message = line.replace(/^(You:|AI:)\s*/, '');
-                  
-                  return (
-                    <div
-                      key={idx}
-                      className={`flex ${isUser ? 'justify-end' : 'justify-start'} animate-fadeIn`}
-                      style={{ animationDelay: `${idx * 0.1}s` }}
-                    >
-                      <div className={`max-w-[80%] px-4 py-2 rounded-2xl ${
-                        isUser 
-                          ? 'bg-gradient-to-r from-cyan-500/80 to-purple-500/80 text-white rounded-br-md' 
-                          : 'bg-gradient-to-r from-slate-700/80 to-slate-600/80 text-cyan-100 rounded-bl-md'
-                      } shadow-lg backdrop-blur-sm border ${
-                        isUser ? 'border-cyan-400/30' : 'border-slate-500/30'
-                      }`}>
-                        {!isUser && (
-                          <div className="flex items-center space-x-2 mb-1">
-                            <div className="w-2 h-2 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full animate-pulse"></div>
-                            <span className="text-xs font-semibold text-cyan-400">NOVA</span>
-                          </div>
-                        )}
-                        <p className="text-sm leading-relaxed">{message}</p>
+              {conversation.length === 0 ? (
+                <div className="flex items-center justify-center h-full text-slate-400">
+                  <p className="text-center">
+                    <span className="text-cyan-400">●</span> Conversation will appear here
+                    <br />
+                    <span className="text-sm">Click the microphone to start talking</span>
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {conversation.map((line, idx) => {
+                    const isUser = line.startsWith("You:");
+                    const message = line.replace(/^(You:|AI:)\s*/, '');
+                    
+                    return (
+                      <div
+                        key={idx}
+                        className={`flex ${isUser ? 'justify-end' : 'justify-start'} animate-fadeIn`}
+                        style={{ animationDelay: `${idx * 0.1}s` }}
+                      >
+                        <div className={`max-w-[85%] px-4 py-3 rounded-2xl ${
+                          isUser 
+                            ? 'bg-gradient-to-r from-cyan-500/90 to-purple-500/90 text-white rounded-br-md border border-cyan-400/40' 
+                            : 'bg-gradient-to-r from-slate-700/90 to-slate-600/90 text-cyan-100 rounded-bl-md border border-slate-500/40'
+                        } shadow-lg backdrop-blur-sm`}>
+                          {!isUser && (
+                            <div className="flex items-center space-x-2 mb-2">
+                              <div className="w-2 h-2 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full animate-pulse"></div>
+                              <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">NOVA AI</span>
+                            </div>
+                          )}
+                          <p className="text-sm leading-relaxed font-medium">{message}</p>
+                          {isUser && (
+                            <div className="text-xs text-cyan-200/70 mt-1 text-right">
+                              Voice Input
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
